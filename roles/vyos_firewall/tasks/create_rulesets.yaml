@@ -1,0 +1,35 @@
+---
+- name: Removing zone policies
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete zone-policy zone"
+
+- name: Creating predefined firewall rulesets
+  vyos.vyos.vyos_firewall_rules:
+    state: replaced
+    config:
+      - afi: ipv4
+        rule_sets: "{{firewall.rulesets}}" 
+
+- name: Creating default firewall ruleset
+  vyos.vyos.vyos_firewall_rules:
+    state: merged
+    config:
+      - afi: ipv4
+        rule_sets:
+          - name: "default"
+            default_action: drop
+            rules:
+              - number: "{{10 + idx}}"
+                description: "Allow ICMP"
+                action: accept
+                protocol: icmp
+                source:
+                  address: "{{item.address | ansible.utils.ipaddr('network/prefix')}}" 
+                destination:
+                  address: "{{item.address}}"
+  loop: "{{interfaces.present | selectattr('address', 'defined') | list}}"
+  loop_control:
+    index_var: idx
+    label: "{{item.address}}"
+

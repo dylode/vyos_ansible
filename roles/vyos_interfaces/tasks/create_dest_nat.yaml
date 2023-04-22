@@ -1,0 +1,13 @@
+- name: Setting up destination NAT
+  vyos.vyos.vyos_config:
+    lines:
+      - "set nat destination rule {{10+idx}} inbound-interface {{item.0.interface}}"
+      - "set nat destination rule {{10+idx}} destination port {{item.1.port}}"
+      - "set nat destination rule {{10+idx}} protocol {{item.1.protocol}}"
+      - "set nat destination rule {{10+idx}} translation address {{item.1.target}}"
+      - "set nat destination rule {{10+idx}} translation port {{item.1.target_port}}"
+  loop: "{{interfaces.present | selectattr('dest_nat', 'defined') | subelements('dest_nat') }}"
+  loop_control:
+    label: "{{idx}}"
+    index_var: idx
+

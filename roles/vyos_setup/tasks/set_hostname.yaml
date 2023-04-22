@@ -1,0 +1,6 @@
+---
+- name: Setting hostname
+  vyos.vyos.vyos_system:
+    host_name: "{{inventory_hostname}}"
+    domain_name: "{{domain}}"
+    name_server: 8.8.8.8

@@ -1,0 +1,4 @@
+- name: Ensure safe SSH configuration
+  vyos.vyos.vyos_config:
+    lines:
+      - set service ssh disable-password-authentication 

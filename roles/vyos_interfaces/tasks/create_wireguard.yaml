@@ -1,0 +1,25 @@
+---
+- name: Create WireGuard interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "set interfaces wireguard {{item.name}} address {{item.address}}"
+      - "set interfaces wireguard {{item.name}} port {{item.port}}"
+      - "set interfaces wireguard {{item.name}} peer {{item.peers[0].name}} pubkey {{item.peers[0].pubkey}}"
+      - "set interfaces wireguard {{item.name}} peer {{item.peers[0].name}} allowed-ips {{item.peers[0].address}}"
+      - "set interfaces wireguard {{item.name}} peer {{item.peers[0].name}} persistent-keepalive 15"
+  loop: "{{interfaces_wireguard.present}}"
+  loop_control:
+    label: "{{item.name}}"
+
+- name: Create WireGuard extra peers
+  vyos.vyos.vyos_config:
+    lines:
+      - "set interfaces wireguard {{item.0.name}} peer {{item.1.name}} pubkey {{item.1.pubkey}}"
+      - "set interfaces wireguard {{item.0.name}} peer {{item.1.name}} allowed-ips {{item.1.address}}"
+      - "set interfaces wireguard {{item.0.name}} peer {{item.1.name}} persistent-keepalive 15"
+  loop: "{{interfaces_wireguard.present | subelements('peers')}}"
+  loop_control:
+    extended: true
+    label: "{{item.0.name}} -> {{item.1.name}}"
+  when: not ansible_loop.first and item.1.state == "present"
+

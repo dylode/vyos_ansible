@@ -1,0 +1,20 @@
+---
+- name: Creating vlans
+  vyos.vyos.vyos_vlan:
+    vlan_id: "{{item.vlan_id}}"
+    name: "{{item.name}}"
+    interfaces: "{{item.trunk_port}}"
+    state: present
+  loop: "{{interfaces_vlan.present}}"
+  loop_control:
+    label: "{{item.trunk_port}}.{{item.vlan_id}}"
+
+- name: Assigning addresses to vlans
+  vyos.vyos.vyos_config:
+    lines:
+      - "set interfaces ethernet {{item.trunk_port}} vif {{item.vlan_id}} address {{item.address}}"
+  loop: "{{interfaces_vlan.present}}"
+  loop_control:
+    label: "{{item.trunk_port}}.{{item.vlan_id}}"
+
+

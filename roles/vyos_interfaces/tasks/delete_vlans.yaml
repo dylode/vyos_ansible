@@ -1,0 +1,11 @@
+---
+- name: Deleting vlans
+  vyos.vyos.vyos_vlan:
+    vlan_id: "{{item.vlan_id}}"
+    interfaces: "{{item.trunk_port}}"
+    state: absent
+  loop: "{{interfaces_vlan.absent}}"
+  loop_control:
+    label: "{{item.trunk_port}.}{{item.vlan_id}}"
+
+

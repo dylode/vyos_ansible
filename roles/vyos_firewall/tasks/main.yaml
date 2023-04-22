@@ -1,0 +1,48 @@
+---
+- set_fact:
+    interfaces: 
+      present: "{{ interfaces | selectattr('state', 'eq', 'present') | list }}"
+      absent: "{{ interfaces | selectattr('state', 'eq', 'absent') | list }}"
+  tags: always
+
+- set_fact:
+    present_interfaces_with_local: "{{ interfaces.present + ([{'name': 'local'}]) }}"
+  tags: always
+
+- set_fact:
+    interfaces_vlan: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'vlan') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'vlan') | list }}"
+  tags: always
+
+- set_fact:
+    interfaces_facade: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'facade') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'facade') | list }}"
+  tags: always
+
+- set_fact:
+    interfaces_wireguard: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'wireguard') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'wireguard') | list }}"
+  tags: always
+
+###########################################################################################################
+
+- import_tasks: global.yaml
+  tags: global
+
+- import_tasks: create_rulesets.yaml
+  tags: rulesets
+
+- import_tasks: create_zones.yaml
+  tags: zones, rulesets
+
+- import_tasks: create_zone_policies.yaml
+  tags: zone, rulesets
+
+- import_tasks: delete_zones.yaml
+  tags: zones
+
+
+

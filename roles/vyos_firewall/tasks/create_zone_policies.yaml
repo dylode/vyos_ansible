@@ -1,0 +1,35 @@
+---
+- name: Creating default zone policies
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.1.name}} from {{item.0.name}} firewall name default"
+  loop: "{{ present_interfaces_with_local | product(present_interfaces_with_local) | list }}"
+  loop_control:
+    label: "{{item.1.name}} from {{item.0.name}}"
+  when: 
+    - item.0.name != item.1.name
+
+- name: Creating predefined zone policies (single)
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.to}} from {{item.from}} firewall name {{item.policy}}"
+  loop: "{{firewall.zone_policies | selectattr('from', 'string') | selectattr('to', 'string') }}"
+  loop_control:
+    label: "{{item.to}} from {{item.from}}"
+
+- name: Creating predefined zone policies (multi to)
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.1}} from {{item.0.from}} firewall name {{item.0.policy}}"
+  loop: "{{firewall.zone_policies | selectattr('from', 'string') | json_query(\"[?to && type(to)=='array']\") | subelements('to') }}"
+  loop_control:
+    label: "{{item.1}} from {{item.0.from}}"
+
+- name: Creating predefined zone policies (multi from)
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.0.to}} from {{item.1}} firewall name {{item.0.policy}}"
+  loop: "{{firewall.zone_policies | json_query(\"[?from && type(from)=='array']\")  | selectattr('to', 'string') | subelements('from') }}"
+  loop_control:
+    label: "{{item.0.to}} from {{item.1}}"
+

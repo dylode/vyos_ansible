@@ -1,0 +1,29 @@
+---
+- name: Creating zones for vlans interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.name}} interface {{item.trunk_port}}.{{item.vlan_id}}"
+  loop: "{{interfaces_vlan.present}}"
+  loop_control:
+    label: "{{item.name}}"
+
+- name: Creating zones for WireGuard interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.name}} interface {{item.name}}"
+  loop: "{{interfaces_wireguard.present}}"
+  loop_control:
+    label: "{{item.name}}"
+
+- name: Creating zones for facade interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone {{item.name}} interface {{item.interface}}"
+  loop: "{{interfaces_facade.present}}"
+  loop_control:
+    label: "{{item.name}}"
+
+- name: Creating local zone
+  vyos.vyos.vyos_config:
+    lines:
+      - "set zone-policy zone local local-zone"

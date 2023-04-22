@@ -1,0 +1,10 @@
+---
+- name: Deleting zones
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete zone-policy zone {{item.name}}"
+  loop: "{{interfaces.absent | list }}"
+  loop_control:
+    label: "{{item.name}}"
+
+

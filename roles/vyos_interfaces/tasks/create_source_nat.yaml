@@ -1,0 +1,11 @@
+---
+- name: Setting up source NAT for vlans
+  vyos.vyos.vyos_config:
+    lines:
+      - "set nat source rule {{100+item.vlan_id}} outbound-interface {{item.source_nat.outbound_port}}"
+      - "set nat source rule {{100+item.vlan_id}} source address {{item.address | ansible.utils.ipaddr('network/prefix')}}"
+      - "set nat source rule {{100+item.vlan_id}} translation address masquerade"
+  loop: "{{interfaces_vlan.present | selectattr('source_nat.state', 'eq', 'present') }}"
+  loop_control:
+    label: "{{100+item.vlan_id}}"
+

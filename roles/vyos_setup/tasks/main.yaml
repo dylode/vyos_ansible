@@ -1,0 +1,12 @@
+---
+- import_tasks: set_banners.yaml
+  tags:
+    - banners
+
+- import_tasks: set_hostname.yaml
+  tags:
+    - hostname
+
+- import_tasks: ensure_safe_ssh.yaml
+  tags:
+    - security

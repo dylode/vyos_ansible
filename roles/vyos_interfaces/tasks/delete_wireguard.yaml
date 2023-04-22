@@ -1,0 +1,18 @@
+---
+- name: Delete WireGuard extra peers
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete interfaces wireguard {{item.0.name}} peer {{item.1.name}}"
+  loop: "{{interfaces_wireguard.present | subelements('peers')}}"
+  loop_control:
+    extended: true
+    label: "{{item.0.name}} -> {{item.1.name}}"
+  when: not ansible_loop.first and item.1.state == "absent"
+
+- name: Delete WireGuard interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete interfaces wireguard {{item.name}}"
+  loop: "{{interfaces_wireguard.absent}}"
+  loop_control:
+    label: "{{item.name}}"

@@ -1,0 +1,23 @@
+---
+- name: Create network group for internal networks
+  vyos.vyos.vyos_firewall_global:
+    config:
+      group:
+        network_group:
+          - name: InternalNetworks
+            description: Contains CIDR ranges of internal networks
+            members:
+              - address: 10.0.0.0/8
+              - address: 172.16.0.0/12
+              - address: 192.168.0.0/16
+
+- name: Configure global state policy
+  vyos.vyos.vyos_firewall_global:
+    config:
+      state_policy:
+        - connection_type: established
+          action: accept
+        - connection_type: related
+          action: accept
+        - connection_type: invalid
+          action: drop

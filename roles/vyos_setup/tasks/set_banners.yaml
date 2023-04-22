@@ -1,0 +1,11 @@
+---
+- name: Configure the pre-login banner
+  vyos.vyos.vyos_banner:
+    banner: pre-login
+    state: absent
+
+- name: Configure the post-login banner
+  vyos.vyos.vyos_banner:
+    banner: post-login
+    state: present
+    text: "{{banner}}"

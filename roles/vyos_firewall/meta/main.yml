@@ -1,0 +1,9 @@
+galaxy_info:
+  author: dylode
+  description: setup vyos firewall zones
+  license: MIT
+  galaxy_tags:
+  	- vyos
+
+dependencies:
+	- vyos.vyos

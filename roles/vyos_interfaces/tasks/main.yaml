@@ -1,0 +1,60 @@
+---
+- set_fact:
+    interfaces: 
+      present: "{{ interfaces | selectattr('state', 'eq', 'present') | list }}"
+      absent: "{{ interfaces | selectattr('state', 'eq', 'absent') | list }}"
+  tags: always
+
+- set_fact:
+    interfaces_vlan: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'vlan') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'vlan') | list }}"
+  tags: always
+
+- set_fact:
+    interfaces_facade: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'facade') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'facade') | list }}"
+  tags: always
+
+- set_fact:
+    interfaces_wireguard: 
+      present: "{{ interfaces.present | selectattr('type', 'eq', 'wireguard') | list }}"
+      absent: "{{ interfaces.absent | selectattr('type', 'eq', 'wireguard') | list }}"
+  tags: always
+
+###########################################################################################################
+
+- name: Check if wireguard interfaces have at least one peer
+  assert:
+    that:
+      - item.peers | length >= 1
+    fail_msg: "WireGuard interface {{ item.name }} must have at least one peer"
+  loop: "{{ interfaces_wireguard.present }}"
+
+###########################################################################################################
+  
+- import_tasks: create_vlans.yaml
+  tags: vlans
+
+- import_tasks: create_source_nat.yaml
+  tags: source_nat
+  
+- import_tasks: create_dest_nat.yaml
+  tags: dest_nat
+
+- import_tasks: create_dhcp.yaml
+  tags: dhcp
+
+- import_tasks: delete_dhcp.yaml
+  tags: dhcp
+
+- import_tasks: delete_source_nat.yaml
+  tags: source_nat
+
+- import_tasks: delete_vlans.yaml
+  tags: vlans
+
+
+- import_tasks: create_wireguard.yaml
+- import_tasks: delete_wireguard.yaml

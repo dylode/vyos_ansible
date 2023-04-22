@@ -1,0 +1,12 @@
+---
+- name: Removing DHCP
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete service dhcp-server shared-network-name {{item.name}}"
+  loop: "{{interfaces.absent}}"
+
+- name: Removing DHCP from present interfaces
+  vyos.vyos.vyos_config:
+    lines:
+      - "delete service dhcp-server shared-network-name {{item.name}}"
+  loop: "{{interfaces.present | selectattr('dhcp', 'defined') | selectattr('dhcp.state', 'eq', 'absent') }}"

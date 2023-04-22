@@ -1,0 +1,12 @@
+---
+- name: Setting up DHCP 
+  vyos.vyos.vyos_config:
+    lines:
+      - "set service dhcp-server shared-network-name {{item.name}} authoritative"
+      - "set service dhcp-server shared-network-name {{item.name}} subnet {{item.address | ansible.utils.ipaddr('network/prefix')}} default-router {{item.address.split('/')[0]}}"
+      - "set service dhcp-server shared-network-name {{item.name}} subnet {{item.address | ansible.utils.ipaddr('network/prefix')}} name-server {{item.address.split('/')[0]}}"
+      - "set service dhcp-server shared-network-name {{item.name}} subnet {{item.address | ansible.utils.ipaddr('network/prefix')}} range 0 start {{item.dhcp.start}}"
+      - "set service dhcp-server shared-network-name {{item.name}} subnet {{item.address | ansible.utils.ipaddr('network/prefix')}} range 0 stop {{item.dhcp.end}}"
+  loop: "{{interfaces.present | selectattr('dhcp', 'defined') | selectattr('dhcp.state', 'eq', 'present') }}"
+  loop_control:
+    label: "{{item.name}}"
