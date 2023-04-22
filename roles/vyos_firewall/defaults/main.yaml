@@ -1,2 +1,9 @@
 ---
 interfaces:
+
+firewall:
+  rule_sets:
+
+  zone_policies:
+
+  groups:

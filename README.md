@@ -113,12 +113,21 @@ interfaces:
         address: 10.10.10.12/32   
 
 firewall:
+  groups:
+    network_group:
+      - name: InternalNetworks
+        description: Contains CIDR ranges of internal networks
+        members:
+          - address: 10.0.0.0/8
+          - address: 172.16.0.0/12
+          - address: 192.168.0.0/16
+
   rulesets:
     - name: allow-from-wan
       default_action: drop
       rules:
         - number: 10
-          description: "ssh rate limit"
+          description: ssh rate limit
           action: drop
           protocol: tcp
           recent:
@@ -130,7 +139,7 @@ firewall:
             port: "{{ssh_port}}"
 
         - number: 20
-          description: "allow ssh"
+          description: allow ssh
           action: accept
           protocol: tcp
           state:
@@ -139,7 +148,7 @@ firewall:
             port: "{{ssh_port}}"
 
         - number: 30
-          description: "allow wireguard"
+          description: allow wireguard
           action: accept
           protocol: udp
           destination:
@@ -158,21 +167,21 @@ firewall:
       default_action: accept
       rules:
         - number: 10
-          description: "deny to internal networks"
+          description: deny to internal networks
           action: drop
           destination:
             group:
-              network_group: "InternalNetworks"
+              network_group: InternalNetworks
 
     - name: allow-wg-to-internal
       default_action: drop
       rules:
         - number: 10
-          description: "allow wg0 to InternalNetworks"
+          description: allow wg0 to InternalNetworks
           action: accept
           destination:
             group:
-              network_group: "InternalNetworks"
+              network_group: InternalNetworks
        
   zone_policies:
     - from: wan
