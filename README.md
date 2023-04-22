@@ -29,7 +29,7 @@ ssh_port: 2222
 wireguard_port: 4289
 
 domain: github.com
-banner: Welcome to my VyOS router!
+banner: Welcome on my VyOS router!
 name_servers:
   - 8.8.8.8
   - 8.8.4.4
