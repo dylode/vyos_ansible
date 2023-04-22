@@ -20,7 +20,7 @@ This collection contains the following roles:
 - `vyos_interfaces`: This role creates/deletes interfaces (only VLAN, WireGuard), configures DHCP, source NAT rules (only for VLAN) and destination NAT rules (portforwarding).
     - Todos:
     	- Destination NAT rules cannot be removed because there is no identification field.
-- `vyos_setup`: This role disables SSH password authentication, disables the pre-login banner, enables a custom post-login banner, sets the hostname to the inventory name, and sets the nameserver to 8.8.8.8.
+- `vyos_setup`: This role disables SSH password authentication, disables the pre-login banner, enables a custom post-login banner, sets the hostname to the inventory name, and sets the nameservers.
 
 ## Example configuration
 
@@ -30,7 +30,10 @@ ssh_port: 2222
 wireguard_port: 4289
 
 domain: github.com
-banner: "{{ lookup('file', 'login_banner.txt') }}"
+banner: "Welcome to my VyOS router!"
+name_servers:
+  - 8.8.8.8
+  - 8.8.4.4
 
 interfaces:
   - name: wan
