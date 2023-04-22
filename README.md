@@ -17,7 +17,7 @@ This collection contains the following roles:
     	- Allow users to add network groups
     	- Add support for additional interface types
     	- Currently each interface has its own zone and it should be made so that a zone can contain multiple interfaces.
-- `vyos_interfaces`: This role creates/deletes interfaces (only VLAN, WireGuard), configures DHCP, source NAT rules (only for VLAN), destination NAT rules, and WireGuard.
+- `vyos_interfaces`: This role creates/deletes interfaces (only VLAN, WireGuard), configures DHCP, source NAT rules (only for VLAN) and destination NAT rules (portforwarding).
     - Todos:
     	- Destination NAT rules cannot be removed because there is no identification field.
 - `vyos_setup`: This role disables SSH password authentication, disables the pre-login banner, enables a custom post-login banner, sets the hostname to the inventory name, and sets the nameserver to 8.8.8.8.
