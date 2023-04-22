@@ -1,9 +1,0 @@
-galaxy_info:
-  author: dylode
-  description: setup vyos itself
-  license: MIT
-  galaxy_tags:
-  	- vyos
-
-dependencies:
-	- vyos.vyos
