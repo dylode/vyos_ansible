@@ -12,7 +12,7 @@ A facade interface is an interface that will not be touched by these roles but s
 
 This collection contains the following roles:
 
-- `vyos_firewall`: This role creates/deletes rule sets, attaches interfaces (of type VLAN, WireGuard and facade) to zones, and applies the zone policies. It also creates a network group containing all IPv4 CIDR ranges for internal networks, and sets the state policy to sensible values (`established` -> `accept`, `related` -> `accept`, and `invalid` -> `drop`). The role only allows ICMP requests from the network of the interface, and blocks all other traffic by default. 
+- `vyos_firewall`: This role creates/deletes rule sets, attaches interfaces (of type VLAN, WireGuard and facade) to zones, and applies the zone policies. It also creates a network groups, and sets the state policy to sensible values (`established` -> `accept`, `related` -> `accept`, and `invalid` -> `drop`). The role only allows ICMP requests from the network of the interface, and blocks all other traffic by default. 
     - Todos: 
     	- Add support for additional interface types
     	- Currently each interface has its own zone and it should be made so that a zone can contain multiple interfaces.
