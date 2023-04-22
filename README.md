@@ -108,7 +108,7 @@ interfaces:
      - name: user3
         state: present
         pubkey: QfJs+TWmNFstPjd9DohSw/xKTKyyqwqKiUASVN2A12Q=
-        address: 10.10.10.11/32   
+        address: 10.10.10.12/32   
 
 firewall:
   rulesets:
