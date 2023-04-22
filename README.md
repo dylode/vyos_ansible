@@ -2,7 +2,7 @@
 
 > **Warning**: These roles are not suitable for production use as they may result in lockouts in certain conditions. Additionally, these roles are not perfect and not all functionality may not work as expected. 
 
-This repository contains Ansible roles that I use to setup my VyOS routers. These roles use the [vyos.Vyos](https://docs.ansible.com/ansible/latest/collections/vyos/vyos/index.html) Ansible plugin and are designed for use with [VyOS 1.3](https://docs.vyos.io/en/equuleus/).
+This repository contains Ansible roles that I use to configure my VyOS routers. These roles use the [vyos.Vyos](https://docs.ansible.com/ansible/latest/collections/vyos/vyos/index.html) Ansible plugin and are designed for use with [VyOS 1.3](https://docs.vyos.io/en/equuleus/).
 
 ## Facade Interfaces
 
