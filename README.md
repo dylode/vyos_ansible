@@ -24,6 +24,7 @@ This collection contains the following roles:
 
 ## Example configuration
 
+```yaml
 ---
 ssh_port: 2222
 wireguard_port: 4289
